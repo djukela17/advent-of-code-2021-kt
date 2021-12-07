@@ -7,11 +7,13 @@ fun main() {
     fun part1(input: List<String>): Int {
         val positions = input[0].split(",").map { it.toInt() }
 
-        return calculateFuelCost(positions)
+        return calculateFuelCostFlat(createMap(positions))
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val positions = input[0].split(",").map { it.toInt() }
+
+        return calculateIncrementalFuelCost(createMap(positions))
     }
 
     val input = readInput("day07/input")
@@ -19,7 +21,7 @@ fun main() {
     println("part2: ${part2(input)}")
 }
 
-fun calculateFuelCost(positions: List<Int>): Int {
+fun createMap(positions: List<Int>): Map<Int, Int> {
     val positionDistribution = mutableMapOf<Int, Int>()
 
     for (position in positions) {
@@ -31,12 +33,16 @@ fun calculateFuelCost(positions: List<Int>): Int {
         }
     }
 
+    return positionDistribution
+}
+
+fun calculateFuelCostFlat(positionDistribution: Map<Int, Int>): Int {
     val highestPosition = positionDistribution.keys.maxOf { it }
     val lowestPosition = positionDistribution.keys.minOf { it }
 
     var lowestFuelCost = Int.MAX_VALUE
 
-    for (i in lowestPosition .. highestPosition) {
+    for (i in lowestPosition..highestPosition) {
         val fuelCost = calculateFuelCostForPosition(i, positionDistribution)
         if (fuelCost < lowestFuelCost) {
             lowestFuelCost = fuelCost
@@ -51,6 +57,44 @@ fun calculateFuelCostForPosition(targetPosition: Int, positionDistribution: Map<
 
     for (entry in positionDistribution.entries) {
         cost += abs(entry.key - targetPosition) * entry.value
+    }
+
+    return cost
+}
+
+fun calculateIncrementalFuelCost(positionDistribution: Map<Int, Int>): Int {
+    val highestPosition = positionDistribution.keys.maxOf { it }
+    val lowestPosition = positionDistribution.keys.minOf { it }
+
+    var lowestFuelCost = Int.MAX_VALUE
+
+    for (i in lowestPosition..highestPosition) {
+        val fuelCost = calculateIncrementalFuelCostForPosition(i, positionDistribution)
+        if (fuelCost < lowestFuelCost) {
+            lowestFuelCost = fuelCost
+        }
+    }
+
+    return lowestFuelCost
+}
+
+fun calculateIncrementalFuelCostForPosition(targetPosition: Int, positionDistribution: Map<Int, Int>): Int {
+    var cost = 0
+
+    for (entry in positionDistribution.entries) {
+        cost += calculate(entry.key, targetPosition) * entry.value
+    }
+
+    return cost
+}
+
+fun calculate(start: Int, end: Int): Int {
+    val delta = abs(start - end)
+
+    var cost = 0
+
+    for (i in 1..delta) {
+        cost += i
     }
 
     return cost

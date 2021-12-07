@@ -1,5 +1,3 @@
-package template
-
 import readInput
 
 fun main() {

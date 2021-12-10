@@ -1,4 +1,5 @@
 import readInput
+import measure
 
 fun main() {
     fun part1(input: List<String>): Int {
@@ -10,6 +11,10 @@ fun main() {
     }
 
     val input = readInput("dayXX/input")
-    println("part1: ${part1(input)}")
-    println("part2: ${part2(input)}")
+    measure {
+        println("part1: ${part1(input)}")
+    }
+    measure {
+        println("part2: ${part2(input)}")
+    }
 }

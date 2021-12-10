@@ -1,6 +1,7 @@
 package day07
 
 import readInput
+import measure
 import kotlin.math.abs
 
 fun main() {
@@ -17,8 +18,12 @@ fun main() {
     }
 
     val input = readInput("day07/input")
-    println("part1: ${part1(input)}")
-    println("part2: ${part2(input)}")
+    measure {
+        println("part1: ${part1(input)}")
+    }
+    measure {
+        println("part2: ${part2(input)}")
+    }
 }
 
 fun createMap(positions: List<Int>): Map<Int, Int> {
@@ -98,4 +103,26 @@ fun calculate(start: Int, end: Int): Int {
     }
 
     return cost
+}
+
+class IncrementalCost(
+    val positionDistribution: Map<Int, Int>,
+) {
+    fun calculateLowesFuelCost(): Int {
+        var lowestFuelCost = Int.MAX_VALUE
+
+        return lowestFuelCost
+    }
+
+    fun calculate(start: Int, end: Int): Int {
+        val delta = abs(start - end)
+
+        var cost = 0
+
+        for (i in 1..delta) {
+            cost += i
+        }
+
+        return cost
+    }
 }

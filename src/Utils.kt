@@ -21,3 +21,16 @@ fun measure(block: () -> Unit) {
     block()
     println("time: ${Date().time - start.time}ms")
 }
+
+fun List<Int>.toDecimal(): Int {
+    var result = 0
+
+    var p = 1
+
+    for (n in this.reversed()) {
+        result += n * p
+        p *= 10
+    }
+
+    return result
+}

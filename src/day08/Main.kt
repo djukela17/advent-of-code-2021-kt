@@ -8,10 +8,6 @@ fun main() {
         return countSimpleDigitsInOutput(parseInput(input))
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
-
     val input = readInput("day08/input")
     measure {
         println("part1: ${part1(input)}")
@@ -38,7 +34,7 @@ fun countSimpleDigitsInOutput(entries: List<Entry>): Int {
 
     for (entry in entries) {
         for (outputDigit in entry.output) {
-            if (simpleDigitSizes.contains(outputDigit.length)) {
+            if (simpleDigitSizes.contains(outputDigit.countActiveSegments())) {
                 count++
             }
         }
@@ -56,22 +52,21 @@ fun parseInput(input: List<String>): List<Entry> {
 fun parseLine(line: String): Entry {
     val (signalPatternValues, digitValues) = line.split("|")
 
-    val signals = mutableListOf<String>()
-    val digits = mutableListOf<String>()
+    val signals = mutableListOf<Digit>()
+    val digits = mutableListOf<Digit>()
 
-    // parse 10 signal patterns
-    for (pattern in signalPatternValues.split(" ")) {
-        signals += pattern
+    for (pattern in signalPatternValues.trim().split(" ")) {
+        signals += Digit(pattern)
     }
 
-    for (digitPattern in digitValues.split(" ")) {
-        digits += digitPattern
+    for (pattern in digitValues.trim().split(" ")) {
+        digits += Digit(pattern)
     }
 
     return Entry(signals, digits)
 }
 
 class Entry(
-    val patterns: List<String>,
-    val output: List<String>,
+    val patterns: List<Digit>,
+    val output: List<Digit>,
 )
